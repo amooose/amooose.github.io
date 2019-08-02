@@ -85,8 +85,9 @@ document.addEventListener("keypress", function onPress(event) {
     // Called when clicking on Cheato's hitbox
     var hitCheck = document.getElementById("hitbox");
     hitCheck.addEventListener("click", function() {
+    $("#clickhere").animate({'opacity': '0'},'fast');
         if (!speaking && !scripted && !snacker) {
-            speak(" Only one spell Cheato can tell. Enter the code $\"SHARKBAIT\"* on this very page!", 300);
+            speak(" Only one spell Cheato can tell. Enter the code $\"SHARKBAIT\"* on this very page!");
         }
         if (!speaking && snacker && snackMsg <snackLines.length ) {
             var time;
@@ -141,6 +142,10 @@ document.addEventListener("keypress", function onPress(event) {
             setTimeout(function() {
                 speak(message);
             }, 8100);
+            setTimeout(function() {
+               $("#clickhere").animate({'opacity': '100'},4000);
+            }, 17500);
+
         }
 
     });
