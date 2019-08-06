@@ -1,4 +1,5 @@
-    var renderer, scene, snackerMDL, model;
+var renderer, scene, snackerMDL, model;
+
 document.querySelector('#jiggy').addEventListener('click', function() {
 
     var clock = new THREE.Clock();
@@ -33,7 +34,6 @@ document.querySelector('#jiggy').addEventListener('click', function() {
     loader.load('resources/cheato.glb', handle_load);
 
     function handle_load(gltf) {
-
         //Load model and apply material
         model = gltf.scene;
         model.children[0].material = new THREE.MeshLambertMaterial({
@@ -53,26 +53,9 @@ document.querySelector('#jiggy').addEventListener('click', function() {
         var flyAnimation = animPlayer.clipAction(animations[0]);
         actions = [flyAnimation];
         flyAnimation.play();
-
     }
 
-    // THREE.JS stars modified from https://codepen.io/jacoboakley/pen/oebwyo //
-    var starsGeometry = new THREE.Geometry();
-    for (var i = 0; i < 10000; i++) {
-        var star = new THREE.Vector3();
-        star.x = THREE.Math.randFloatSpread(2000);
-        star.y = THREE.Math.randFloatSpread(2000);
-        star.z = THREE.Math.randFloatSpread(2000);
-        starsGeometry.vertices.push(star);
-    }
-
-    var starsMaterial = new THREE.PointsMaterial({
-        color: 0xffffff
-    });
-    var starField = new THREE.Points(starsGeometry, starsMaterial);
     scene.add(starField);
-    //////////////////////////////////////////////////////////////////////////
-
 
     var mouseDown = 0;
     document.addEventListener("mouseleave", function(event) {
@@ -94,10 +77,7 @@ document.querySelector('#jiggy').addEventListener('click', function() {
             clicked = true;
         }
     }
-
-    //Start render loop
-    renderLoop();
-
+    
     //Mousemove event
     window.addEventListener('mousemove', function(e) {
         mouse3D = new THREE.Vector3(
@@ -110,18 +90,23 @@ document.querySelector('#jiggy').addEventListener('click', function() {
             20);
     });
 
+    //Start render loop
+    renderLoop();
 
     var i = 2.0;
     var clicked = false;
     function bounce() {
+        // Start of bounce, play audio
         if (i == 2.0) {
             pokeAudio.play();
         }
         
+        // Bounce based on a modified Morlet Wavelet
         i += .07;
         var morletFormula = 1 * ((0.007 * Math.pow(Math.E, (-1 * (Math.pow(i - 4, 2.0) / 2.0)))) * Math.cos(5.0 * (i + 4))) + .01;
         model.scale.y = morletFormula;
 
+        // Return model to original scale at end of bounce.
         if (i > 7) {
             model.scale.y = .01;
             clicked = false;
@@ -136,9 +121,8 @@ document.querySelector('#jiggy').addEventListener('click', function() {
     }, false);
 
     
-
+    // Stretch model based on mouse position. Work in progress.
     function stretch() {
-
         window.addEventListener('mousemove', function(e) {
         
             mX = mouse3D.x * .01;
@@ -153,15 +137,32 @@ document.querySelector('#jiggy').addEventListener('click', function() {
                 }
                 model.rotation.z = (mX * -1) * 2;
             }
-
         });
     }
 
+    // Resize scene/renderer based on window size.
     window.addEventListener('resize', onWindowResize, false);
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    
+    
+    function syncAudioAnimation(){
+        if (frame == 0) {
+                actions[0].reset();
+                actions[0].timeScale = 1.15;
+            }
+
+        if (frame == 42) {
+            frame = 0;
+            flapAudio.pause();
+            flapAudio.currentTime = 0;
+            flapAudio.play();
+        } else {
+            frame++;
+        }
     }
 
 
@@ -170,14 +171,10 @@ document.querySelector('#jiggy').addEventListener('click', function() {
     var Sinterval = 1 / 20;
     var msP = .5;
     var frame = 0;
-    
-    function snackerRenderLoop(){
-    
-    }
+
     
     var inScene = false;
     function renderLoop() {
-        
         requestAnimationFrame(renderLoop)
         delta += clock.getDelta();
         if (delta > interval) {
@@ -196,19 +193,7 @@ document.querySelector('#jiggy').addEventListener('click', function() {
             if(animPlayerSnacker){
             animPlayerSnacker.update(delta);
             }
-            if (frame == 0) {
-                actions[0].reset();
-                actions[0].timeScale = 1.15;
-            }
-
-            if (frame == 42) {
-                frame = 0;
-                flapAudio.pause();
-                flapAudio.currentTime = 0;
-                flapAudio.play();
-            } else {
-                frame++;
-            }
+            syncAudioAnimation();
 
             if (model) {
             if(model.position.x != 0){
