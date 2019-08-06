@@ -4,8 +4,8 @@ function fadeMusic() {
         flapAudio.volume -= .01;
     }
     if (music.volume > 0.01) {
-        if (snackerMDL.position.z < -5) {
-            snackerMDL.position.z += 2;
+        if (snackerMDL.position.z == -750) {
+            moveSnack();
         }
         music.volume -= .001;
         snackerMusic.volume += .001;
@@ -16,6 +16,20 @@ function fadeMusic() {
         flapAudio.volume = 0;
     }
 
+}
+
+// Slow approach for snacker model.
+var ssP = .8;
+function moveSnack(){
+if (snackerMDL.position.z < -5) {
+    if (snackerMDL.position.z > -11) {
+        ssP -= .0217
+        snackerMDL.position.z += ssP;
+    } else {
+        snackerMDL.position.z += .5;
+    }
+     setTimeout('moveSnack()', 4);
+    }
 }
 
 // Start snacker sequence.
