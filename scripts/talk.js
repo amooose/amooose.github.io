@@ -57,7 +57,7 @@ window.onload = function() {
         }, 2000);
     }
 
-    // Brings up a text dialouge box and speaks 'newMessage' with an option argument
+    // Brings up a text dialogue box and speaks 'newMessage' with an option argument
     // to delay the ending via 'endDelay'
     function speak(newMessage, endDelay) {
         if (!speaking) {
@@ -89,9 +89,11 @@ window.onload = function() {
     // Called when clicking on Cheato's hitbox
     var hitCheck = document.getElementById("hitbox");
     hitCheck.addEventListener("click", function() {
+        // Fade mouse pointer pic away.
         $("#clickhere").animate({
             'opacity': '0'
         }, 'fast');
+        
         if (!speaking && !scripted && !snacker) {
             speak(" Only one spell Cheato can tell. Enter the code $\"SHARKBAIT\"* on this very page!");
         }

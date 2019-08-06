@@ -1,27 +1,30 @@
 var renderer, scene, snackerMDL, model;
 
-document.querySelector('#jiggy').addEventListener('click', function() {
 
+// wait for main puzzle piece click
+document.querySelector('#jiggy').addEventListener('click', function() {
+    var i = 2.0;
+    var clicked = false;
     var clock = new THREE.Clock();
     var  camera, delta = 0, mouse3D, mouse3DS,
-        myCanvas = document.getElementById('cheato3DCanvas');
+        cheato3DCanvas = document.getElementById('cheato3DCanvas');
 
-    //RENDERER
+    // init renderer
     renderer = new THREE.WebGLRenderer({
-        canvas: myCanvas,
+        canvas: cheato3DCanvas,
         antialias: true
     });
     renderer.setClearColor(0x171716);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    //CAMERA
+    // init camera
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 700);
 
-    //SCENE
+    // init scene
     scene = new THREE.Scene();
 
-    //LIGHTS
+    // init lights
     var light = new THREE.AmbientLight(0xffffff, 0.5);
     var light2 = new THREE.PointLight(0xffffff, 0.5);
     scene.add(light);
@@ -55,8 +58,10 @@ document.querySelector('#jiggy').addEventListener('click', function() {
         flyAnimation.play();
     }
 
+    // add stars
     scene.add(starField);
 
+    // treat leaving the page as releasing the mouse
     var mouseDown = 0;
     document.addEventListener("mouseleave", function(event) {
         if (!clicked && mouseDown == 1) {
@@ -65,6 +70,7 @@ document.querySelector('#jiggy').addEventListener('click', function() {
         mouseDown = 0;
     });
 
+    // Handle stretching / bouncing model
     document.body.onmousedown = function() {
         mouseDown = 1;
         if ($('#hitbox:hover').length == 0 && !inScene) {
@@ -93,8 +99,9 @@ document.querySelector('#jiggy').addEventListener('click', function() {
     //Start render loop
     renderLoop();
 
-    var i = 2.0;
-    var clicked = false;
+    
+    
+    // Bounce cheato's model.
     function bounce() {
         // Start of bounce, play audio
         if (i == 2.0) {
@@ -115,6 +122,9 @@ document.querySelector('#jiggy').addEventListener('click', function() {
 
     }
 
+    // Listen for hitbox's click.
+    // Using html element as a hitbox avoids costly
+    // raytracing mouseclick intercept detecting.
     var hitCheck = document.getElementById("hitbox");
     hitCheck.addEventListener("click", function() {
         clicked = true;
@@ -148,7 +158,9 @@ document.querySelector('#jiggy').addEventListener('click', function() {
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
     
-    
+    // Sync flapping noise to the animation.
+    // Will slowly unsync if we dont reset the model's 
+    // animation at its final frame.
     function syncAudioAnimation(){
         if (frame == 0) {
                 actions[0].reset();
@@ -177,6 +189,7 @@ document.querySelector('#jiggy').addEventListener('click', function() {
     function renderLoop() {
         requestAnimationFrame(renderLoop)
         delta += clock.getDelta();
+        // only update at 60fps so model syncs with audio
         if (delta > interval) {
             if (clicked && !inScene) {
                 bounce();
@@ -184,21 +197,25 @@ document.querySelector('#jiggy').addEventListener('click', function() {
             if (mouseDown == 1 && !inScene) {
                 stretch();
             }
+            
             starField.rotation.z += 0.002;
             starField.rotation.x -= 0.002;
             starField.rotation.y += 0.002;
 
             renderer.render(scene, camera);
             animPlayer.update(delta);
+            
             if(animPlayerSnacker){
             animPlayerSnacker.update(delta);
             }
+            
             syncAudioAnimation();
 
             if (model) {
-            if(model.position.x != 0){
-            inScene = true;
-        }
+                if(model.position.x != 0){
+                    inScene = true;
+                }
+                
                 // initial zoom-in
                 if (model.position.z < -5) {
                     if (model.position.z > -11) {
@@ -208,21 +225,22 @@ document.querySelector('#jiggy').addEventListener('click', function() {
                         model.position.z += .5;
                     }
                 }
-                
+                    
                 if (mouseDown == 0) {
                     if (mouse3D) {
                         model.lookAt(mouse3D);
                         snackerMDL.lookAt(mouse3DS);
 
                     } else {
+                        // Make model look forward despite no mouse
                         var noMouse = new THREE.Vector3(-1.39, -3.94, 20);
                         model.lookAt(noMouse);
                         snackerMDL.lookAt(noMouse);
                     }
                 }
                 
-            }
-            delta = delta % interval;
+        }
+        delta = delta % interval;
         }
 
     }
