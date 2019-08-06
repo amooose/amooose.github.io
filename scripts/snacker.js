@@ -4,9 +4,6 @@ function fadeMusic() {
         flapAudio.volume -= .01;
     }
     if (music.volume > 0.01) {
-        if (snackerMDL.position.z == -750) {
-            moveSnack();
-        }
         music.volume -= .001;
         snackerMusic.volume += .001;
         model.position.x -= .03
@@ -36,6 +33,7 @@ if (snackerMDL.position.z < -5) {
 function snackerStart() {
     scripted = true;
     fadeMusic();
+    moveSnack();
     snackerMusic.play();
     // Load new avatar dialogue head
     cImageSrc = 'images/snacker.png';
