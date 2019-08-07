@@ -1,3 +1,4 @@
+var cMsg = 0;
 var speed = 5;
 var speaking = false;
 $("#target").html("");
@@ -95,7 +96,12 @@ window.onload = function() {
         }, 'fast');
         
         if (!speaking && !scripted && !snacker) {
+            if(cMsg == 1){
+                speak(" Cheato needs a favor from you, that would be getting an0nymooose a $JOB*");
+            } else{
             speak(" Only one spell Cheato can tell. Enter the code $\"SHARKBAIT\"* on this very page!");
+            }
+            cMsg++;
         }
         if (!speaking && snacker && snackMsg < snackLines.length) {
             var time;
