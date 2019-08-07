@@ -1,0 +1,29 @@
+canvas{
+  height: 0px;
+  width: 0px;
+}
+content{
+  height: 0px;
+  width: 0px;
+}
+
+audio {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  width: calc(100% - 20px);
+}
+button {
+    position: absolute;
+    display: block;
+    z-index: 99;
+    left: 50%;
+    top: 50%;
+}
+
+body {
+  background-color: black;
+  background-image: linear-gradient(to top, black, #5b1885);
+  margin: 0px;
+  overflow: hidden;
+}
