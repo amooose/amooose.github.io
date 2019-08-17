@@ -1,0 +1,16 @@
+Package: com.amooose.notiftoggle
+Version: 1.0
+Architecture: iphoneos-arm
+Maintainer: Dylan (amooose)
+Installed-Size: 136
+Depends: mobilesubstrate, libactivator, cy+os.ios (>= 8.0)
+Filename: ./debs/com.amooose.notiftoggle_1.0.0_iphoneos-arm.deb
+Size: 6708
+MD5sum: da4ad3587808a72ee3721756c52076c2
+SHA1: d4e63a79e032a36128d97204cd939a61dc484268
+SHA256: 9bef67a6a0b548c3c365f6f77029ed68bc0dacc8846ecb29b0288c736837ae3f
+Section: Tweaks
+Description: Toggles the Notification Center (aka Cover Sheet)
+Author: Dylan (amooose)
+Name: Notification Center Toggle
+
