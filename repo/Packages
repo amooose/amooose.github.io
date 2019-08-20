@@ -38,9 +38,9 @@ Installed-Size: 152
 Depends: mobilesubstrate
 Filename: ./debs/com.amooose.disablelongpress_1.0.0_iphoneos-arm.deb
 Size: 3472
-MD5sum: 1ccb40bddab2414e66b42c8c3186eb07
-SHA1: 1d5d6a79a805bed301b1998259f1c6b8dddc0d01
-SHA256: 2b9fc8f561e6d7734295268a2a4fda0252eb86e4677ee82d1cb67fe91e7fabd4
+MD5sum: 1dd8e116b75b73a40a4307a9e1a46ea6
+SHA1: e08bf8923a046079e268c8113f29f458d9fd3d4e
+SHA256: ae175c8098ed0dc4da694b7f82f2ee89c9fb73621398dbd4c799728d2f0476bf
 Section: Tweaks
 Description: Removes LongPress from Apollo
 Author: Dylan (amooose)
