@@ -1,4 +1,4 @@
-// Basic 3D visualizer by https://github.com/DylanO17
+// Basic 3D visualizer by https://github.com/amooose
 
 //Random list of colors
 var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
@@ -52,12 +52,14 @@ function getRandom() {
   num = num*randNP+(Math.floor(Math.random()*10)*.2)
   return num;
 }
+
 //Init shape and add to sceneShape
 var geometry = new THREE.OctahedronGeometry(1,0);
 var material = new THREE.MeshPhongMaterial( { color: 0x00ff00} );
 var shape = new THREE.Mesh( geometry, material );
-///////////////////
 sceneShape.add(shape);
+///////////////////
+
 
 // Resize scene/renderer based on window size.
 window.addEventListener('resize', onWindowResize, false);
@@ -70,7 +72,7 @@ function onWindowResize() {
 // Wait until user clicks button (Chrome requires this due to not being
 // able to create AudioContext() until user interacts with page)
 // Parts of audio init code from http://35.245.74.165/music-visualiser-with-three-js/
-document.querySelector('button').addEventListener('click', function() {
+document.querySelector('.playbtn').addEventListener('click', function() {
     // Audio init ////
     var audio = new Audio();
     audio.src = 'ChillDay_comp.mp3';
@@ -101,12 +103,17 @@ document.querySelector('button').addEventListener('click', function() {
     
     function changeOpacity(opLvl){
         var colorRand = colorArray[Math.floor(Math.random()*colorArray.length)];
-        var material3 = new THREE.MeshPhongMaterial( {transparent: true, opacity: opLvl, color: prevColor, specular: 0xffffff, shininess: 50} );
-        shape.material = material3;
+        
+        var materialNew = new THREE.MeshPhongMaterial( {transparent: true, opacity: opLvl,
+        color: prevColor, specular: 0xffffff, shininess: 50} );
+        
+        shape.material = materialNew;
         shape.material.needsUpdate = true;
     }
+    
     var rotSpeed = 0.01;
     var lightness = 100;
+    
     // Loop to render each frame
     function renderFrame() {
         requestAnimationFrame(renderFrame);
@@ -120,6 +127,8 @@ document.querySelector('button').addEventListener('click', function() {
         shape.scale.y = dataArray[loc]*.02;
         shape.scale.z = dataArray[loc+2]*.02;
         //console.log("scale:"+(((shape.scale.z)/3)-(0.22)));
+        
+        //opacity optional, looks better without.
         //changeOpacity((((shape.scale.z)/3)-(0.22)));
         // z axis is chosen for treble. When the z scale goes 
         // grows to its largest, change the color of the shape.
@@ -135,12 +144,6 @@ document.querySelector('button').addEventListener('click', function() {
         renderer.render( sceneShape, camera );
         analyser.getByteFrequencyData(dataArray);
 
-        for (var i = 0; i < bufferLength; i++) {
-            //barHeight = dataArray[i];
-            //var r = barHeight + (25 * (i/bufferLength));
-            //var g = 250 * (i/bufferLength);
-            //var b = 50;
-        }
     }
     // begin render
     audio.play();
@@ -148,4 +151,4 @@ document.querySelector('button').addEventListener('click', function() {
 });
 
 // JQuery - hide button upon click
-$('button').click(function(){$(this).hide();});
+$('.playbtn').click(function(){$(this).hide();});
