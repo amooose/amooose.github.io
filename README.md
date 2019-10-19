@@ -1,3 +1,3 @@
-# amooose.github.io(amooose.github.io)
-
-Short scripted scene with custom animated and rigged models, built with ThreeJS.
+# amooose.github.io
+[amooose.github.io](amooose.github.io)
+A website where a short scripted scene with custom animated and rigged models, built with ThreeJS.
