@@ -97,9 +97,9 @@ window.onload = function() {
         
         if (!speaking && !scripted && !snacker) {
             if(cMsg == 1){
-                speak(" Cheato needs a favor from you, that would be getting an0nymooose a $JOB*");
+                speak(" Only one spell Cheato can tell. Enter the code $\"SHARKBAIT\"* on this very page!");
             } else{
-            speak(" Only one spell Cheato can tell. Enter the code $\"SHARKBAIT\"* on this very page!");
+                speak(" Cheato needs a favor from you, that would be getting Dylan a $JOB*");
             }
             cMsg++;
         }
